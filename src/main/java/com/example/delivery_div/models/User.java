@@ -1,12 +1,6 @@
 package com.example.delivery_div.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 
@@ -31,30 +25,35 @@ import lombok.ToString;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 30)
     private String name;
     private String surname;
     @Past(message = "BirtDate must be past")
-    private LocalDate birthDate;
+    private LocalDate birthdate;
     @Column(unique = true)
-    @Pattern(regexp = "[0-9]{3}+[0-9]{3}+[0-9]{4}")
+//    @Pattern(regexp = "[0-9]{3}+[0-9]{3}+[0-9]{4}")
     private String email;
     private String password;
-    @Pattern(regexp = "[0-9]{3}+[0-9]{3}+[0-9]{4}")
+//    @Pattern(regexp = "[0-9]{3}[0-9]{3}[0-9]{4}")
     private Integer phoneNumber;
 
 
     @ManyToMany
     @JoinTable(
+            schema = "delivery_div",
             name = "user_role",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @ToString.Exclude
     private Set<Role> role;
 
-    private boolean isEnable;
+    private Boolean active;
 
 
 }
+
+
+

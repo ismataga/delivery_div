@@ -1,5 +1,6 @@
 package com.example.delivery_div.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,14 +28,15 @@ public class Food {
     private Long id;
     private String name;
     private String description;
-    private Integer amount;
+    private int amount;
     private String foodDetails;
+    private String image;
     @ManyToOne
     private Category category;
-    private String image;
-
     @ManyToOne
     private Cart cart ;
 
 
+
 }
+

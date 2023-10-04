@@ -27,7 +27,7 @@ public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String password;
+
     @Column(name = "create_date")
     private LocalDate creatDate;
     @Column(name = "location")
