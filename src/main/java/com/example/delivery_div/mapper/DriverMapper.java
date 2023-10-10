@@ -13,4 +13,6 @@ public interface DriverMapper {
     DriverDto driverToDriverDto(Driver driver);
 
     List<DriverDto> driverToDriverDtoList(List<Driver> drivers);
+
+    Driver driverDtoTodriver(DriverDto driverDto);
 }

@@ -9,18 +9,23 @@ import com.example.delivery_div.models.Cart;
 import com.example.delivery_div.models.User;
 import com.example.delivery_div.repository.CartRepository;
 import com.example.delivery_div.repository.UserRepository;
+import jakarta.persistence.Column;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final UserMapper userMapper;
@@ -42,8 +47,11 @@ public class UserService {
     public UserDto getUserById(Long id) {
         log.info("getUserById().start " + id);
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found " + id));
+        log.info("getUserById() user " + user);
         log.info("getUserById().end " + id);
-        return userMapper.entityToUserDto(user);
+        UserDto dto = userMapper.entityToUserDto(user);
+        log.info("getUserById() dto " + dto.getName() + " " + dto.getBirthdate() + " " + dto.getSurname());
+        return dto;
     }
 
     public UserDto createUser(UserDto userDto) {
@@ -81,5 +89,32 @@ public class UserService {
         cartRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found " + id));
         cartRepository.deleteById(id);
         log.info("deleteProductByIdInCart().end " + id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        log.info("loadUserByUsername().start " + username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found " + username));
+    }
+
+    public void increaseAttemptCount(String username) {
+        userRepository.findByUsername(username)
+                .ifPresent(user -> {
+                    int attemptAccount = user.getAttemptCount();
+                    if (attemptAccount > 2) {
+                        user.setAccountNonLocked(false);
+                    }
+                    user.setAttemptCount(user.getAttemptCount() + 1);
+                    userRepository.save(user);
+                });
+    }
+
+    public void resetAttempts(String username) {
+        userRepository.findByUsername(username)
+                .ifPresent(user -> {
+                    user.setAttemptCount(0);
+                    userRepository.save(user);
+                });
     }
 }

@@ -6,6 +6,7 @@ import com.example.delivery_div.mapper.DriverMapper;
 import com.example.delivery_div.models.Driver;
 import com.example.delivery_div.models.User;
 import com.example.delivery_div.repository.DriverRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,11 +48,18 @@ public class DriverService {
         }
         log.info("updateDriverById().end");
     }
-
+    @Transactional
     public void deleteDriverById(Long id) {
         log.info("updateDriverById().start " + id);
         driverRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found " + id));
         driverRepository.deleteById(id);
         log.info("updateDriverById().end " + id);
+    }
+
+    public void createDriver(DriverDto driverDto){
+        log.info("createDriver().start");
+        Driver driver = driverMapper.driverDtoTodriver(driverDto);
+        driverRepository.save(driver);
+        log.info("createDriver().end");
     }
 }

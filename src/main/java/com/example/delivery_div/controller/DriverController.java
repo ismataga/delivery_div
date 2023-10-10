@@ -1,6 +1,7 @@
 package com.example.delivery_div.controller;
 
 import com.example.delivery_div.dto.DriverDto;
+import com.example.delivery_div.dto.FoodDto;
 import com.example.delivery_div.service.DriverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,8 +15,9 @@ import java.util.List;
 @RequestMapping("/api/v1/drivers")
 public class DriverController {
     private final DriverService driverService;
+
     @GetMapping
-    public ResponseEntity<List<DriverDto>>getAllDriver() {
+    public ResponseEntity<List<DriverDto>> getAllDriver() {
         return ResponseEntity.ok(driverService.getAllDriver());
     }
 
@@ -34,5 +36,11 @@ public class DriverController {
     public ResponseEntity deleteDriverById(@PathVariable Long id) {
         driverService.deleteDriverById(id);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<DriverDto> createDriver(@RequestBody DriverDto driverDto) {
+        driverService.createDriver(driverDto);
+        return ResponseEntity.ok(driverDto);
     }
 }

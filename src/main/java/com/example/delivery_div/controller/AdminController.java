@@ -4,6 +4,7 @@ import com.example.delivery_div.dto.CustomersDto;
 import com.example.delivery_div.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,10 +32,20 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAllCustomer());
     }
 
-//    @GetMapping("/getAllOrders")
-//    public ResponseEntity<List<OrdersDto>> getAllOrders() {
-//        return ResponseEntity.ok(adminService.getAllOrders());
-//    }
+    @GetMapping("/customers/count")
+    public ResponseEntity<Integer> getCustomersCount() {
+        return  ResponseEntity.ok(adminService.getCustomersCount());
+    }
+
+    @GetMapping("/drivers/count")
+    public ResponseEntity<Integer> getDriversCount() {
+        return  ResponseEntity.ok(adminService.getDriversCount());
+    }
+
+    @GetMapping("/orders/count")
+    public ResponseEntity<Integer> getOrdersCount() {
+        return  ResponseEntity.ok(adminService.getOrdersCount());
+    }
 
 
 

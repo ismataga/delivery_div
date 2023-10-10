@@ -25,5 +25,27 @@ public class AdminService {
         return getAllCustomers;
     }
 
+    public Integer getCustomersCount() {
+        log.info("getCustomersCount().start");
+        Integer users = userRepository.getCustomersCount();
+        log.info("getCustomersCount().end");
+        return users;
+    }
+
+    public Integer getDriversCount() {
+        log.info("getDriversCount().start");
+        Integer driversCount = userRepository.getDriversCount();
+        log.info("getDriversCount().end");
+        return driversCount;
+    }
+
+
+    public Integer getOrdersCount() {
+        log.info("getOrdersCount().start");
+        Integer getOrdersCount = userRepository.getOrdersCount();
+        log.info("getOrdersCount().end");
+        return getOrdersCount;
+    }
+
 
 }
