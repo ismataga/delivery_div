@@ -1,16 +1,19 @@
 package com.example.delivery_div.repository;
 
 
+import com.example.delivery_div.models.Cart;
 import com.example.delivery_div.models.User;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -29,6 +32,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> getAllCustomers();
 
     Optional<User> findByEmail(String email);
+
 
     Optional<User> findByUsername(String email);
 
@@ -52,12 +56,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
                                     """, nativeQuery = true)
     Integer getDriversCount();
 
-    @Query(value = """
-
-             SELECT COUNT(o.id) AS orders_count
-            FROM delivery_div.order o
-                                     """, nativeQuery = true)
+    @Query(value = """ 
+            SELECT COUNT(*) AS order_count
+           FROM delivery_div.order  
+           GROUP BY DATE(delivery_div."order"."createdDate");
+                                                 """, nativeQuery = true)
     Integer getOrdersCount();
+
+    @Query(value = "SELECT SUM(cart.total_amount) AS total_income FROM cart WHERE DATE(cart.created_date) = :createdDate", nativeQuery = true)
+    Integer getOrdersDailySum(@Param("createdDate") LocalDate createdDate);
+
+    @Query(value = "SELECT SUM(cart.total_amount) AS total_income FROM cart WHERE cart.created_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    Integer getOrdersMonthlySum(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+
 
 
 

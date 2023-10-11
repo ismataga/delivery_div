@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -46,6 +47,20 @@ public class AdminService {
         log.info("getOrdersCount().end");
         return getOrdersCount;
     }
+
+    public Integer getOrdersDailySum(LocalDate createdDate) {
+        log.info("getOrdersDailySum().start");
+        Integer getOrdersSum = userRepository.getOrdersDailySum(createdDate);
+        log.info("getOrdersDailySum().end " + getOrdersSum);
+        return getOrdersSum;
+    }
+    public Integer getOrdersMonthlySum(LocalDate createdDate,LocalDate updatedDate) {
+        log.info("getOrdersMonthlySum().start");
+        Integer getOrdersSum = userRepository.getOrdersMonthlySum(createdDate,updatedDate);
+        log.info("getOrdersMonthlySum().end " + getOrdersSum);
+        return getOrdersSum;
+    }
+
 
 
 }

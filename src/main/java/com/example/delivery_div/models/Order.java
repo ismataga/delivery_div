@@ -3,6 +3,8 @@ package com.example.delivery_div.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -21,4 +23,6 @@ public class Order {
     @OneToOne
     private Driver driver;
     private boolean  status;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 }
