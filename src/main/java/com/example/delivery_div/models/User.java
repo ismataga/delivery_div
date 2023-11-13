@@ -57,7 +57,7 @@ public class  User implements UserDetails {
     private Boolean active;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Role> roles = new ArrayList<>();
 
     @Override

@@ -41,4 +41,6 @@ public class RegistrationController {
         registrationService.confirm(uuid);
 
     }
+
+
 }

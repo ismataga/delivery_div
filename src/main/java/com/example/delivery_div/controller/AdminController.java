@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -29,7 +30,7 @@ public class AdminController {
 //İllik – gəlir, sifariş sayı
 
     @GetMapping("/customers")
-//    @PreAuthorize("ROLE_CUSTOMER")
+    @PreAuthorize("ROLE_CUSTOMER")
     public ResponseEntity<List<CustomersDto>> getAllCustomers() {
         return ResponseEntity.ok(adminService.getAllCustomer());
     }
